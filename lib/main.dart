@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:how_is_moon/screens/earth.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:flare_flutter/flare_actor.dart';
@@ -108,9 +109,10 @@ class _State extends State<MainPage> {
             ],
           )),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'earthIcon',
         onPressed: () {
-          calculateMoonPhase(DateTime.now());
-          brNav = "Today's Moon";
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => EarthPage()));
         },
         backgroundColor: Color.fromRGBO(5, 40, 62, 1.0),
         child: new Image.asset('assets/earth.png'),
