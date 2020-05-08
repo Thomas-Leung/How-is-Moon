@@ -35,7 +35,7 @@ class _State extends State<MainPage> {
   void initState() {
     super.initState();
     new Timer.periodic(const Duration(seconds: 1), (Timer t) => _clock());
-    calculateMoonPhase(DateTime.now());
+    // calculateMoonPhase(DateTime.now().);
     currDate = DateFormat('EEE d MMM').format(DateTime.now());
   }
 
@@ -57,7 +57,7 @@ class _State extends State<MainPage> {
         lastDate: new DateTime(2200));
 
     if (newDate != null && newDate != _date) {
-      calculateMoonPhase(newDate);
+      // calculateMoonPhase(newDate);
       setState(() {
         _date = newDate;
         brNav = new DateFormat('yyyy-MM-dd').format(newDate).toString();
@@ -140,32 +140,5 @@ class _State extends State<MainPage> {
             ],
           )),
     );
-  }
-
-  calculateMoonPhase(DateTime date) {
-    moonMode = false;
-    int year = int.parse(new DateFormat('yyyy').format(date));
-    int month = int.parse(new DateFormat('MM').format(date));
-    int day = int.parse(new DateFormat('dd').format(date));
-    // Moon Phase Formular
-    if (month == 1 || month == 2) {
-      month += 12;
-      year--;
-    }
-    var A = year ~/ 100;
-    var B = A ~/ 4;
-    var C = 2 - A + B;
-    var D = (365.25 * (year + 4716)).toInt();
-    var E = (30.6001 * (month + 1)).toInt();
-    var julianDay = C + day + D + E - 1524.5;
-    var daysSinceNew = julianDay - 2451549.5;
-    var newMoons = daysSinceNew / 29.53;
-    var newMoonsD = newMoons - newMoons.toInt();
-    var daysM = newMoonsD * 29.53;
-    seconds = 0;
-    playTime = (daysM / 29.53 * 8).round();
-    setState(() {
-      play = true;
-    });
   }
 }

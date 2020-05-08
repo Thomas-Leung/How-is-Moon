@@ -1,7 +1,7 @@
 class Moon {
   // This simply mods the difference between the date and a known new moon date (1970-01-07) by the length of the lunar period.
   // For this reason, it is only valid from 1970 onwards.
-  int moonPhase(year, month, day) {
+  int calculateMoonPhase(year, month, day) {
     // long-term avg duration 29.530587981 days (coverted to seconds)
     double lp = 2551442.8015584;
     DateTime date = new DateTime(year, month, day, 20, 35, 0);
