@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:how_is_moon/component/clock.dart';
 import 'package:how_is_moon/screens/earth.dart';
-import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
       home: MainPage(),
     );
@@ -24,36 +25,13 @@ class MainPage extends StatefulWidget {
 class _State extends State<MainPage> {
   DateTime _date = new DateTime.now();
   String brNav = "Today's Moon";
-  String currTime = "How's Moon?";
-  String currDate = "";
   bool play = false;
-  bool moonMode = false;
-  int seconds = 0;
-  int playTime = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    new Timer.periodic(const Duration(seconds: 1), (Timer t) => _clock());
-    // calculateMoonPhase(DateTime.now().);
-    currDate = DateFormat('EEE d MMM').format(DateTime.now());
-  }
-
-  void _clock() {
-    setState(() {
-      seconds++;
-      currTime = DateFormat('kk:mm:ss').format(DateTime.now());
-      if (playTime <= seconds && !moonMode) {
-        play = false;
-      }
-    });
-  }
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime newDate = await showDatePicker(
         context: context,
         initialDate: _date,
-        firstDate: new DateTime(1800),
+        firstDate: new DateTime(1970, 1, 7),
         lastDate: new DateTime(2200));
 
     if (newDate != null && newDate != _date) {
@@ -68,46 +46,21 @@ class _State extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Container(
-          color: Color.fromRGBO(5, 40, 62, 1.0),
           child: Column(
-            children: <Widget>[
-              Center(
-                child: new Padding(
-                    padding: EdgeInsets.fromLTRB(16, 100, 16, 30),
-                    child: Column(
-                      children: <Widget>[
-                        new Text(
-                          currTime,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w200, fontSize: 50),
-                        ),
-                        new Text(
-                          currDate,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w200, fontSize: 20),
-                        ),
-                      ],
-                    )),
-              ),
-              Container(
-                height: 350,
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      moonMode = !moonMode;
-                      play = !play;
-                    });
-                  },
-                  child: FlareActor(
-                    "assets/Moon.flr",
-                    fit: BoxFit.contain,
-                    animation: play ? 'moonPhrase' : 'idle',
-                  ),
-                ),
-              ),
-            ],
-          )),
+        children: <Widget>[
+          Clock(),
+          Container(
+            height: 350,
+            child: FlareActor(
+              "assets/Moon.flr",
+              fit: BoxFit.contain,
+              animation: play ? 'moonPhrase' : 'idle',
+            ),
+          ),
+        ],
+      )),
       floatingActionButton: FloatingActionButton(
         heroTag: 'earthIcon',
         onPressed: () {
