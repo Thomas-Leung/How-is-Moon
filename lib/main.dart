@@ -1,6 +1,10 @@
+import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:how_is_moon/component/clock.dart';
+import 'package:how_is_moon/flare_controller.dart';
 import 'package:how_is_moon/screens/earth.dart';
+import 'package:how_is_moon/moon.dart';
+import 'package:how_is_moon/tracking_input.dart';
 import 'package:intl/intl.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
@@ -25,7 +29,29 @@ class MainPage extends StatefulWidget {
 class _State extends State<MainPage> {
   DateTime _date = new DateTime.now();
   String brNav = "Today's Moon";
-  bool play = false;
+
+  AnimationControls _flareController;
+  final FlareControls plusMoonControl = FlareControls();
+
+  int currentMoonPhase = 0;
+  int selectedMoon = 29;
+
+  @override
+  void initState() {
+    super.initState();
+    _flareController = AnimationControls();
+  }
+
+  void _incrementMoon(int amount) {
+    currentMoonPhase = amount;
+    double diff = currentMoonPhase / selectedMoon;
+    _flareController.updateMoonPhase(diff);
+  }
+
+  void _resetMoon() {
+    currentMoonPhase = 0;
+    _flareController.resetMoonPhase();
+  }
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime newDate = await showDatePicker(
@@ -35,10 +61,20 @@ class _State extends State<MainPage> {
         lastDate: new DateTime(2200));
 
     if (newDate != null && newDate != _date) {
-      // calculateMoonPhase(newDate);
+      int moonDay =
+          Moon().calculateMoonPhase(newDate.year, newDate.month, newDate.day);
       setState(() {
         _date = newDate;
-        brNav = new DateFormat('yyyy-MM-dd').format(newDate).toString();
+        print("_date: " +
+            DateTime.now().toString() +
+            " moon: " +
+            moonDay.toString());
+        if (DateFormat('yyyy-MM-dd').format(newDate) ==
+            DateFormat('yyyy-MM-dd').format(DateTime.now()))
+          brNav = "Today's Moon";
+        else
+          brNav = new DateFormat('yyyy-MM-dd').format(newDate).toString();
+        _incrementMoon(moonDay);
       });
     }
   }
@@ -53,10 +89,16 @@ class _State extends State<MainPage> {
           Clock(),
           Container(
             height: 350,
-            child: FlareActor(
-              "assets/Moon.flr",
-              fit: BoxFit.contain,
-              animation: play ? 'moonPhrase' : 'idle',
+            child: Stack(
+              fit: StackFit.expand,
+              children: <Widget>[
+                FlareActor("assets/Moon.flr",
+                    controller: _flareController,
+                    fit: BoxFit.contain,
+                    animation: 'idle',
+                    artboard: "Artboard"),
+                Container(child: Text('Hello')),
+              ],
             ),
           ),
         ],
