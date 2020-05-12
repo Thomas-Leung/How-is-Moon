@@ -65,10 +65,7 @@ class _State extends State<MainPage> {
           Moon().calculateMoonPhase(newDate.year, newDate.month, newDate.day);
       setState(() {
         _date = newDate;
-        print("_date: " +
-            DateTime.now().toString() +
-            " moon: " +
-            moonDay.toString());
+        // set pick date button text
         if (DateFormat('yyyy-MM-dd').format(newDate) ==
             DateFormat('yyyy-MM-dd').format(DateTime.now()))
           brNav = "Today's Moon";
@@ -90,6 +87,7 @@ class _State extends State<MainPage> {
           Container(
             height: 350,
             child: Stack(
+              alignment: AlignmentDirectional.center,
               fit: StackFit.expand,
               children: <Widget>[
                 FlareActor("assets/Moon.flr",
@@ -97,8 +95,9 @@ class _State extends State<MainPage> {
                     fit: BoxFit.contain,
                     animation: 'idle',
                     artboard: "Artboard"),
-                Container(child: Text('Hello')),
+                Positioned(bottom: 0, child: Text('Hello')),
               ],
+              overflow: Overflow.visible,
             ),
           ),
         ],
