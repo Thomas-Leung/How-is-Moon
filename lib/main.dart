@@ -35,6 +35,7 @@ class _State extends State<MainPage> {
 
   int currentMoonPhase = 0;
   int selectedMoon = 29;
+  var tapSat = false;
 
   @override
   void initState() {
@@ -88,14 +89,33 @@ class _State extends State<MainPage> {
             height: 350,
             child: Stack(
               alignment: AlignmentDirectional.center,
-              fit: StackFit.expand,
+              fit: StackFit.loose,
               children: <Widget>[
                 FlareActor("assets/Moon.flr",
                     controller: _flareController,
                     fit: BoxFit.contain,
                     animation: 'idle',
                     artboard: "Artboard"),
-                Positioned(bottom: 0, child: Text('Hello')),
+                Positioned(
+                  top: -25,
+                  right: 20,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        tapSat = !tapSat;
+                      });
+                    },
+                    child: Container(
+                      height: 150,
+                      width: 120,
+                      child: FlareActor(
+                        'assets/Satellite.flr',
+                        fit: BoxFit.contain,
+                        animation: tapSat ? 'touch' : 'idle',
+                      ),
+                    ),
+                  ),
+                ),
               ],
               overflow: Overflow.visible,
             ),
