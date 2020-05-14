@@ -41,6 +41,9 @@ class _State extends State<MainPage> {
   void initState() {
     super.initState();
     _flareController = AnimationControls();
+    int moonDay = Moon().calculateMoonPhase(
+        DateTime.now().year, DateTime.now().month, DateTime.now().day);
+    _incrementMoon(moonDay);
   }
 
   void _incrementMoon(int amount) {
