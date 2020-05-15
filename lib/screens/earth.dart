@@ -15,10 +15,29 @@ class EarthPage extends StatelessWidget {
                     tag: 'earthIcon',
                     child: FlareActor("assets/Earth.flr",
                         fit: BoxFit.contain, animation: 'idle')),
-                FlatButton.icon(
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: FlatButton(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(Icons.keyboard_arrow_down),
+                        Text("  Back to Moon  "),
+                        Icon(Icons.keyboard_arrow_down)
+                      ],
+                    ),
                     onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.arrow_back_ios),
-                    label: Text("back to moon")),
+                    color: Color(0xFF4A5F72),
+                    shape: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          style: BorderStyle.solid,
+                          width: 1.0,
+                          color: Colors.transparent),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
