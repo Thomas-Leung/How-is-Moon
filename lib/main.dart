@@ -4,6 +4,7 @@ import 'package:how_is_moon/component/clock.dart';
 import 'package:how_is_moon/flare_controller.dart';
 import 'package:how_is_moon/screens/earth.dart';
 import 'package:how_is_moon/moon.dart';
+import 'package:how_is_moon/settingsDialog.dart';
 import 'package:how_is_moon/tracking_input.dart';
 import 'package:intl/intl.dart';
 import 'package:flare_flutter/flare_actor.dart';
@@ -146,7 +147,13 @@ class _State extends State<MainPage> {
             children: <Widget>[
               FlatButton(
                 child: new Text("How's Moon in: "),
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    // (_) is a shorthand for (BuildContext context)
+                    builder: (_) => SettingDialog(),
+                  );
+                },
               ),
               FlatButton(
                 child: new Text(brNav),
