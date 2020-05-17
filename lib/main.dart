@@ -5,9 +5,9 @@ import 'package:how_is_moon/flare_controller.dart';
 import 'package:how_is_moon/screens/earth.dart';
 import 'package:how_is_moon/moon.dart';
 import 'package:how_is_moon/settingsDialog.dart';
-import 'package:how_is_moon/tracking_input.dart';
 import 'package:intl/intl.dart';
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MyApp());
 
@@ -37,6 +37,7 @@ class _State extends State<MainPage> {
   int currentMoonPhase = 0;
   int selectedMoon = 29;
   var tapSat = false;
+  var showSat = false;
 
   @override
   void initState() {
@@ -45,17 +46,13 @@ class _State extends State<MainPage> {
     int moonDay = Moon().calculateMoonPhase(
         DateTime.now().year, DateTime.now().month, DateTime.now().day);
     _incrementMoon(moonDay);
+    getSharedPref();
   }
 
   void _incrementMoon(int amount) {
     currentMoonPhase = amount;
     double diff = currentMoonPhase / selectedMoon;
     _flareController.updateMoonPhase(diff);
-  }
-
-  void _resetMoon() {
-    currentMoonPhase = 0;
-    _flareController.resetMoonPhase();
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -81,51 +78,69 @@ class _State extends State<MainPage> {
     }
   }
 
+  getSharedPref() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      showSat = prefs.getBool('showSat') ?? false;
+    });
+  }
+
+  // pass this method to settings dialog to
+  // change value in parent (main.dart)
+  settingCallback(newState) {
+    setState(() {
+      showSat = newState;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(
-          child: Column(
-        children: <Widget>[
-          Clock(),
-          Container(
-            height: 350,
-            child: Stack(
-              alignment: AlignmentDirectional.center,
-              fit: StackFit.loose,
-              children: <Widget>[
-                FlareActor("assets/Moon.flr",
-                    controller: _flareController,
-                    fit: BoxFit.contain,
-                    animation: 'idle',
-                    artboard: "Artboard"),
-                Positioned(
-                  top: -25,
-                  right: 20,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        tapSat = !tapSat;
-                      });
-                    },
-                    child: Container(
-                      height: 150,
-                      width: 120,
-                      child: FlareActor(
-                        'assets/Satellite.flr',
-                        fit: BoxFit.contain,
-                        animation: tapSat ? 'touch' : 'idle',
-                      ),
+        child: Column(
+          children: <Widget>[
+            Clock(),
+            Container(
+              height: 350,
+              child: Stack(
+                alignment: AlignmentDirectional.center,
+                fit: StackFit.loose,
+                children: <Widget>[
+                  FlareActor("assets/Moon.flr",
+                      controller: _flareController,
+                      fit: BoxFit.contain,
+                      animation: 'idle',
+                      artboard: "Artboard"),
+                  Positioned(
+                    top: -25,
+                    right: 20,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          tapSat = !tapSat;
+                        });
+                      },
+                      child: showSat
+                          ? Container(
+                              height: 150,
+                              width: 120,
+                              child: FlareActor(
+                                'assets/Satellite.flr',
+                                fit: BoxFit.contain,
+                                animation: tapSat ? 'touch' : 'idle',
+                              ),
+                            )
+                          : Container(),
                     ),
                   ),
-                ),
-              ],
-              overflow: Overflow.visible,
+                ],
+                overflow: Overflow.visible,
+              ),
             ),
-          ),
-        ],
-      )),
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'earthIcon',
         onPressed: () {
@@ -151,7 +166,7 @@ class _State extends State<MainPage> {
                   showDialog(
                     context: context,
                     // (_) is a shorthand for (BuildContext context)
-                    builder: (_) => SettingDialog(),
+                    builder: (_) => SettingDialog(settingCallback),
                   );
                 },
               ),

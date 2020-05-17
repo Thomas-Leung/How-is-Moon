@@ -1,12 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingDialog extends StatefulWidget {
+  final Function(bool) callback;
+  SettingDialog(this.callback);
+  
   @override
   _SettingDialogState createState() => _SettingDialogState();
 }
 
 class _SettingDialogState extends State<SettingDialog> {
-  bool showSat = false;
+  bool showSat;
+
+  @override
+  void initState() {
+    getSharedPref();
+    super.initState();
+  }
+
+  getSharedPref() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      showSat = prefs.getBool('showSat') ?? false;
+    });
+  }
+
+  setSharedPref(key, value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(key, value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +64,13 @@ class _SettingDialogState extends State<SettingDialog> {
                         title: const Text('Show Satellite'),
                         value: showSat,
                         onChanged: (bool value) {
+                          // save to shared preferences
+                          setSharedPref('showSat', value);
                           setState(() {
                             showSat = value;
                           });
+                          // modify the value in parent
+                          widget.callback(showSat);
                         },
                         secondary: const Icon(Icons.airplanemode_active),
                       )

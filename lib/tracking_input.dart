@@ -3,6 +3,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'flare_controller.dart';
 
+// FOR REFERENCE ONLY, NO USE FOR NOW.
 class TrackingInput extends StatefulWidget {
   @override
   _TrackingInputState createState() => _TrackingInputState();
