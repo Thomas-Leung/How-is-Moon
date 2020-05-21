@@ -16,7 +16,7 @@ class _ClockState extends State<Clock> {
   bool play = false;
   bool moonMode = false;
 
-    @override
+  @override
   void initState() {
     super.initState();
     new Timer.periodic(const Duration(seconds: 1), (Timer t) => _clock());
@@ -37,6 +37,7 @@ class _ClockState extends State<Clock> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 220,
       child: Center(
         child: new Padding(
             padding: EdgeInsets.fromLTRB(16, 100, 16, 30),

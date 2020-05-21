@@ -1,6 +1,7 @@
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:how_is_moon/component/clock.dart';
+import 'package:how_is_moon/component/moonTitle.dart';
 import 'package:how_is_moon/flare_controller.dart';
 import 'package:how_is_moon/screens/earth.dart';
 import 'package:how_is_moon/moon.dart';
@@ -38,6 +39,7 @@ class _State extends State<MainPage> {
   int selectedMoon = 29;
   var tapSat = false;
   var showSat = false;
+  var showClock = true;
 
   @override
   void initState() {
@@ -100,7 +102,16 @@ class _State extends State<MainPage> {
       body: Container(
         child: Column(
           children: <Widget>[
-            Clock(),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  showClock = !showClock;
+                });
+              },
+              child: Container(
+                child: showClock ? Clock() : MoonTitle(),
+              ),
+            ),
             Container(
               height: 350,
               child: Stack(
