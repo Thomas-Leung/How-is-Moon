@@ -9,28 +9,28 @@ class Clock extends StatefulWidget {
 }
 
 class _ClockState extends State<Clock> {
-  int seconds = 0;
-  int playTime = 0;
   String currTime = "How's Moon?";
   String currDate = "";
-  bool play = false;
-  bool moonMode = false;
+  var timer;
 
   @override
   void initState() {
     super.initState();
-    new Timer.periodic(const Duration(seconds: 1), (Timer t) => _clock());
+    timer =
+        new Timer.periodic(const Duration(seconds: 1), (Timer t) => _clock());
     // calculateMoonPhase(DateTime.now().);
     currDate = DateFormat('EEE d MMM').format(DateTime.now());
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
+  }
+
   void _clock() {
     setState(() {
-      seconds++;
       currTime = DateFormat('kk:mm:ss').format(DateTime.now());
-      if (playTime <= seconds && !moonMode) {
-        play = false;
-      }
     });
   }
 
@@ -40,19 +40,20 @@ class _ClockState extends State<Clock> {
       height: 220,
       child: Center(
         child: new Padding(
-            padding: EdgeInsets.fromLTRB(16, 100, 16, 30),
-            child: Column(
-              children: <Widget>[
-                new Text(
-                  currTime,
-                  style: TextStyle(fontWeight: FontWeight.w200, fontSize: 50),
-                ),
-                new Text(
-                  currDate,
-                  style: TextStyle(fontWeight: FontWeight.w200, fontSize: 20),
-                ),
-              ],
-            )),
+          padding: EdgeInsets.fromLTRB(16, 100, 16, 30),
+          child: Column(
+            children: <Widget>[
+              new Text(
+                currTime,
+                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 50),
+              ),
+              new Text(
+                currDate,
+                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 20),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -10,7 +10,7 @@ class SettingDialog extends StatefulWidget {
 }
 
 class _SettingDialogState extends State<SettingDialog> {
-  bool showSat;
+  bool showSat = false;
 
   @override
   void initState() {
