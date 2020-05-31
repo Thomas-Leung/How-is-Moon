@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class MoonTitle extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return TodayTitle();
-  }
-}
+  final DateTime newDate;
+  MoonTitle(this.newDate);
 
-class TodayTitle extends StatelessWidget {
-  const TodayTitle({
-    Key key,
-  }) : super(key: key);
+  final List months = [
+    "",
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "June",
+    "July",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -24,18 +33,24 @@ class TodayTitle extends StatelessWidget {
           children: <Widget>[
             Positioned(
               top: 0,
-              left: 100,
+              left: 90,
               child: Text(
-                "",
+                DateFormat('yyyy-MM-dd').format(newDate) ==
+                        DateFormat('yyyy-MM-dd').format(DateTime.now())
+                    ? ""
+                    : newDate.year.toString(),
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
               ),
             ),
             Positioned(
-              top: 0,
+              top: 10,
               left: 90,
               child: Text(
-                "Today's",
-                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 48),
+                DateFormat('yyyy-MM-dd').format(newDate) ==
+                        DateFormat('yyyy-MM-dd').format(DateTime.now())
+                    ? "Today's"
+                    : "${months[newDate.month]} ${newDate.day.toString()}",
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 48),
               ),
             ),
             Positioned(
@@ -43,7 +58,7 @@ class TodayTitle extends StatelessWidget {
               right: 100,
               child: Text(
                 "Moon",
-                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 40),
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 40),
               ),
             ),
           ],

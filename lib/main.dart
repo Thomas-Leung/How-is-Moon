@@ -40,6 +40,7 @@ class _State extends State<MainPage> {
   var tapSat = false;
   var showSat = false;
   var showClock = true;
+  DateTime newDate = DateTime.now();
 
   @override
   void initState() {
@@ -58,7 +59,7 @@ class _State extends State<MainPage> {
   }
 
   Future<Null> _selectDate(BuildContext context) async {
-    final DateTime newDate = await showDatePicker(
+    newDate = await showDatePicker(
         context: context,
         initialDate: _date,
         firstDate: new DateTime(1970, 1, 7),
@@ -109,7 +110,7 @@ class _State extends State<MainPage> {
                 });
               },
               child: Container(
-                child: showClock ? Clock() : MoonTitle(),
+                child: showClock ? Clock() : MoonTitle(newDate),
               ),
             ),
             Container(
