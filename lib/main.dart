@@ -1,4 +1,3 @@
-import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:how_is_moon/component/clock.dart';
 import 'package:how_is_moon/component/moonTitle.dart';
@@ -33,7 +32,6 @@ class _State extends State<MainPage> {
   String brNav = "Today's Moon";
 
   AnimationControls _flareController;
-  final FlareControls plusMoonControl = FlareControls();
 
   int currentMoonPhase = 0;
   int selectedMoon = 29;
@@ -41,6 +39,7 @@ class _State extends State<MainPage> {
   var showSat = false;
   var showClock = true;
   DateTime newDate = DateTime.now();
+  double diff;
 
   @override
   void initState() {
@@ -54,7 +53,7 @@ class _State extends State<MainPage> {
 
   void _incrementMoon(int amount) {
     currentMoonPhase = amount;
-    double diff = currentMoonPhase / selectedMoon;
+    diff = currentMoonPhase / selectedMoon;
     _flareController.updateMoonPhase(diff);
   }
 
@@ -157,7 +156,7 @@ class _State extends State<MainPage> {
         heroTag: 'earthIcon',
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => EarthPage()));
+              context, MaterialPageRoute(builder: (context) => EarthPage(diff)));
         },
         backgroundColor: Color.fromRGBO(5, 40, 62, 1.0),
         child: new Image.asset('assets/earth.png'),
