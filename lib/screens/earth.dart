@@ -16,6 +16,7 @@ class EarthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int tapCount = 0;
     return Scaffold(
       backgroundColor: Color.fromRGBO(5, 40, 62, 1.0),
       body: SafeArea(
@@ -33,11 +34,29 @@ class EarthPage extends StatelessWidget {
             ),
             Hero(
               tag: 'earthIcon',
-              child: FlareActor("assets/Earth.flr",
-                  controller: _flareController,
-                  fit: BoxFit.contain,
-                  animation: 'idleClouds',
-                  artboard: "Artboard"),
+              child: Builder(
+                builder: (context) => GestureDetector(
+                  onTap: () {
+                    tapCount++;
+                    if (tapCount >= 3) {
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Stop tapping. Earthquake detected from Earth!'),
+                        action: SnackBarAction(
+                          label: 'Close',
+                          onPressed: () {},
+                        ),
+                      ),
+                    );
+                    }
+                  },
+                  child: FlareActor("assets/Earth.flr",
+                      controller: _flareController,
+                      fit: BoxFit.contain,
+                      animation: 'idleClouds',
+                      artboard: "Artboard"),
+                ),
+              ),
             ),
             Align(
               alignment: Alignment.bottomCenter,
