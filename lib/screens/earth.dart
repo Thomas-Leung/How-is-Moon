@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -39,15 +40,16 @@ class EarthPage extends StatelessWidget {
                   onTap: () {
                     tapCount++;
                     if (tapCount >= 3) {
-                    Scaffold.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Stop tapping. Earthquake detected from Earth!'),
-                        action: SnackBarAction(
-                          label: 'Close',
-                          onPressed: () {},
+                      Scaffold.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                              'Stop tapping. Earthquake detected from Earth!'),
+                          action: SnackBarAction(
+                            label: 'Close',
+                            onPressed: () {},
+                          ),
                         ),
-                      ),
-                    );
+                      );
                     }
                   },
                   child: FlareActor("assets/Earth.flr",
@@ -81,8 +83,42 @@ class EarthPage extends StatelessWidget {
                 ),
               ),
             ),
+            Positioned(
+              right: 0,
+              child: IconButton(
+                icon: Icon(Icons.info_outline),
+                iconSize: 28,
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    // (_) is a shorthand for (BuildContext context)
+                    builder: (_) => _dialogContent(context),
+                  );
+                },
+              ),
+            ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _dialogContent(context) {
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+      child: SimpleDialog(
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        backgroundColor: Color.fromARGB(0, 0, 0, 0),
+        children: <Widget>[
+          Text('Facts about the Moon'),
+          Text(
+              '* This page shows the approximate location of the Moon from the slelcted date.'),
+          Table(children: [
+            TableRow(children: [Text('item1'), Text('content1')]),
+            TableRow(children: [Text('item2'), Text('content2')]),
+          ]),
+        ],
       ),
     );
   }
