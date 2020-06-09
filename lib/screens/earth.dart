@@ -6,6 +6,16 @@ import 'package:how_is_moon/flare_controller.dart';
 
 class EarthPage extends StatelessWidget {
   final AnimationControls _flareController = AnimationControls();
+  List<KeyValueModel> _moonDataList = [
+    KeyValueModel(key: "Diameter", value: "3475 km"),
+    KeyValueModel(key: "Surface Area", value: "3.793 x 10\u2077 km\u00B2"),
+    KeyValueModel(key: "Volume", value: "2.1958 x 10\u00B9\u2070 km\u00B3"),
+    KeyValueModel(key: "Mass", value: "7.342 x 10\u00B2\u00B2 kg"),
+    KeyValueModel(key: "Day Length", value: "29.5 Earth days"),
+    KeyValueModel(key: "Gravity", value: "16.6% of Earth"),
+    KeyValueModel(key: "Average Distance from Earth", value: "384 400 km"),
+    KeyValueModel(key: "Age", value: "4.51 billion years")
+  ];
 
   // diff is calculated from the main class basically is
   // currentMoon divided by total moon phrase (approx. 29 days)
@@ -110,16 +120,42 @@ class EarthPage extends StatelessWidget {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
         backgroundColor: Color.fromARGB(0, 0, 0, 0),
+        title: Text(
+          "Facts about the Moon",
+          textAlign: TextAlign.center,
+        ),
         children: <Widget>[
-          Text('Facts about the Moon'),
-          Text(
-              '* This page shows the approximate location of the Moon from the slelcted date.'),
-          Table(children: [
-            TableRow(children: [Text('item1'), Text('content1')]),
-            TableRow(children: [Text('item2'), Text('content2')]),
-          ]),
+          Table(
+            children: _moonDataList
+                .map(
+                  (item) => TableRow(children: [
+                    Container(
+                        padding: EdgeInsets.only(bottom: 16.0),
+                        child: Text(
+                          item.key,
+                          style: TextStyle(
+                              fontSize: 16.0, fontWeight: FontWeight.w600),
+                        )),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: Text(item.value,
+                          style: TextStyle(
+                              fontSize: 16.0, fontWeight: FontWeight.w600)),
+                    )
+                  ]),
+                )
+                .toList(),
+          ),
         ],
       ),
     );
   }
+}
+
+// Create a Model class to hold key-value pair
+class KeyValueModel {
+  String key;
+  String value;
+
+  KeyValueModel({this.key, this.value});
 }
