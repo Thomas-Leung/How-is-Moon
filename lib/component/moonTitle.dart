@@ -24,7 +24,6 @@ class MoonTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 220,
       child: Padding(
         padding: EdgeInsets.fromLTRB(16, 100, 16, 30),
         child: Stack(
@@ -54,7 +53,7 @@ class MoonTitle extends StatelessWidget {
               ),
             ),
             Positioned(
-              bottom: -10,
+              top: 56,
               right: 100,
               child: Text(
                 "Moon",

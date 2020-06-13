@@ -37,7 +37,6 @@ class _ClockState extends State<Clock> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 220,
       child: Center(
         child: new Padding(
           padding: EdgeInsets.fromLTRB(16, 100, 16, 30),

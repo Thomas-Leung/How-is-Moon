@@ -102,52 +102,70 @@ class _State extends State<MainPage> {
       body: Container(
         child: Column(
           children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  showClock = !showClock;
-                });
-              },
+            Flexible(
+              flex: 2,
+              fit: FlexFit.tight,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    showClock = !showClock;
+                  });
+                },
+                child: Container(
+                  child: showClock ? Clock() : MoonTitle(newDate),
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 3,
               child: Container(
-                child: showClock ? Clock() : MoonTitle(newDate),
+                child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  fit: StackFit.loose,
+                  children: <Widget>[
+                    FlareActor("assets/Moon.flr",
+                        controller: _flareController,
+                        fit: BoxFit.contain,
+                        animation: 'idle',
+                        artboard: "Artboard"),
+                    Positioned(
+                      top: 0,
+                      child: GestureDetector(
+                        onTap: () {
+                          print("tapped");
+                        },
+                        child: Text("TAP ME"),
+                      ),
+                    ),
+                    Positioned(
+                      top: -25,
+                      right: 20,
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            tapSat = !tapSat;
+                          });
+                        },
+                        child: showSat
+                            ? Container(
+                                height: 150,
+                                width: 120,
+                                child: FlareActor(
+                                  'assets/Satellite.flr',
+                                  fit: BoxFit.contain,
+                                  animation: tapSat ? 'touch' : 'idle',
+                                ),
+                              )
+                            : Container(),
+                      ),
+                    ),
+                  ],
+                  overflow: Overflow.visible,
+                ),
               ),
             ),
             Container(
-              height: 350,
-              child: Stack(
-                alignment: AlignmentDirectional.center,
-                fit: StackFit.loose,
-                children: <Widget>[
-                  FlareActor("assets/Moon.flr",
-                      controller: _flareController,
-                      fit: BoxFit.contain,
-                      animation: 'idle',
-                      artboard: "Artboard"),
-                  Positioned(
-                    top: -25,
-                    right: 20,
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          tapSat = !tapSat;
-                        });
-                      },
-                      child: showSat
-                          ? Container(
-                              height: 150,
-                              width: 120,
-                              child: FlareActor(
-                                'assets/Satellite.flr',
-                                fit: BoxFit.contain,
-                                animation: tapSat ? 'touch' : 'idle',
-                              ),
-                            )
-                          : Container(),
-                    ),
-                  ),
-                ],
-                overflow: Overflow.visible,
-              ),
+              height: 40,
             ),
           ],
         ),
@@ -155,8 +173,8 @@ class _State extends State<MainPage> {
       floatingActionButton: FloatingActionButton(
         heroTag: 'earthIcon',
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => EarthPage(diff)));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => EarthPage(diff)));
         },
         backgroundColor: Color.fromRGBO(5, 40, 62, 1.0),
         child: new Image.asset('assets/earth.png'),
@@ -164,31 +182,32 @@ class _State extends State<MainPage> {
       backgroundColor: Color.fromRGBO(5, 40, 62, 1.0),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-          color: Colors.teal,
-          shape: CircularNotchedRectangle(),
-          notchMargin: 10.0,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              FlatButton(
-                child: new Text("How's Moon in: "),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    // (_) is a shorthand for (BuildContext context)
-                    builder: (_) => SettingDialog(settingCallback),
-                  );
-                },
-              ),
-              FlatButton(
-                child: new Text(brNav),
-                onPressed: () {
-                  _selectDate(context);
-                },
-              ),
-            ],
-          )),
+        color: Colors.teal,
+        shape: CircularNotchedRectangle(),
+        notchMargin: 10.0,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            FlatButton(
+              child: new Text("How's Moon in: "),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  // (_) is a shorthand for (BuildContext context)
+                  builder: (_) => SettingDialog(settingCallback),
+                );
+              },
+            ),
+            FlatButton(
+              child: new Text(brNav),
+              onPressed: () {
+                _selectDate(context);
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
