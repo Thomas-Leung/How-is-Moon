@@ -6,7 +6,7 @@ import 'package:how_is_moon/flare_controller.dart';
 
 class EarthPage extends StatelessWidget {
   final AnimationControls _flareController = AnimationControls();
-  List<KeyValueModel> _moonDataList = [
+  final List<KeyValueModel> _moonDataList = [
     KeyValueModel(key: "Diameter", value: "3475 km"),
     KeyValueModel(key: "Surface Area", value: "3.793 x 10\u2077 km\u00B2"),
     KeyValueModel(key: "Volume", value: "2.1958 x 10\u00B9\u2070 km\u00B3"),
@@ -125,6 +125,8 @@ class EarthPage extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         children: <Widget>[
+          // _moonDataList has fixed data, we are mapping data to table row 
+          // such that we can customize padding between rows
           Table(
             children: _moonDataList
                 .map(
