@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingDialog extends StatefulWidget {
-  final Function(bool) callback;
+  final Function(String, bool) callback;
   SettingDialog(this.callback);
-  
+
   @override
   _SettingDialogState createState() => _SettingDialogState();
 }
 
 class _SettingDialogState extends State<SettingDialog> {
   bool showSat = false;
+  bool showAst = false;
 
   @override
   void initState() {
@@ -22,6 +23,7 @@ class _SettingDialogState extends State<SettingDialog> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       showSat = prefs.getBool('showSat') ?? false;
+      showAst = prefs.getBool('showAst') ?? false;
     });
   }
 
@@ -70,9 +72,23 @@ class _SettingDialogState extends State<SettingDialog> {
                             showSat = value;
                           });
                           // modify the value in parent
-                          widget.callback(showSat);
+                          widget.callback('showSat', showSat);
                         },
                         secondary: const Icon(Icons.airplanemode_active),
+                      ),
+                      SwitchListTile(
+                        title: const Text('Show Astronaut'),
+                        value: showAst,
+                        onChanged: (bool value) {
+                          // save to shared preferences
+                          setSharedPref('showAst', value);
+                          setState(() {
+                            showAst = value;
+                          });
+                          // modify the value in parent
+                          widget.callback('showAst', showAst);
+                        },
+                        secondary: const Icon(Icons.accessibility_new),
                       )
                     ],
                   ),

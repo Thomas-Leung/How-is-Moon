@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:how_is_moon/component/astronaut.dart';
 import 'package:how_is_moon/component/clock.dart';
 import 'package:how_is_moon/component/moonTitle.dart';
 import 'package:how_is_moon/flare_controller.dart';
@@ -35,9 +36,10 @@ class _State extends State<MainPage> {
 
   int currentMoonPhase = 0;
   int selectedMoon = 29;
-  var tapSat = false;
-  var showSat = false;
-  var showClock = true;
+  bool tapSat = false;
+  bool showSat = false;
+  bool showAst = false;
+  bool showClock = true;
   DateTime newDate = DateTime.now();
   double diff;
 
@@ -84,14 +86,18 @@ class _State extends State<MainPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       showSat = prefs.getBool('showSat') ?? false;
+      showAst = prefs.getBool('showAst') ?? false;
     });
   }
 
   // pass this method to settings dialog to
   // change value in parent (main.dart)
-  settingCallback(newState) {
+  settingCallback(setting, newState) {
     setState(() {
-      showSat = newState;
+      if (setting == 'showSat')
+        showSat = newState;
+      else
+        showAst = newState;
     });
   }
 
@@ -128,15 +134,7 @@ class _State extends State<MainPage> {
                         fit: BoxFit.contain,
                         animation: 'idle',
                         artboard: "Artboard"),
-                    Positioned(
-                      top: 0,
-                      child: GestureDetector(
-                        onTap: () {
-                          print("tapped");
-                        },
-                        child: Text("TAP ME"),
-                      ),
-                    ),
+                    showAst ? Astronaut() : Container(),
                     Positioned(
                       top: -25,
                       right: 20,
