@@ -28,11 +28,12 @@ class MainPage extends StatefulWidget {
   _State createState() => _State();
 }
 
-class _State extends State<MainPage> {
+class _State extends State<MainPage> with SingleTickerProviderStateMixin {
   DateTime _date = new DateTime.now();
   String brNav = "Today's Moon";
 
   AnimationControls _flareController;
+  AnimationController _flutterController;
 
   int currentMoonPhase = 0;
   int selectedMoon = 29;
@@ -42,6 +43,7 @@ class _State extends State<MainPage> {
   bool showClock = true;
   DateTime newDate = DateTime.now();
   double diff;
+  double _scale;
 
   @override
   void initState() {
@@ -51,6 +53,15 @@ class _State extends State<MainPage> {
         DateTime.now().year, DateTime.now().month, DateTime.now().day);
     _incrementMoon(moonDay);
     getSharedPref();
+
+    _flutterController = AnimationController(
+        vsync: this,
+        duration: Duration(milliseconds: 80),
+        lowerBound: 0.0,
+        upperBound: 0.1)
+      ..addListener(() {
+        setState(() {});
+      });
   }
 
   void _incrementMoon(int amount) {
@@ -101,8 +112,17 @@ class _State extends State<MainPage> {
     });
   }
 
+  void _onTapDown(TapDownDetails details) {
+    _flutterController.forward();
+  }
+
+  void _onTapUp(TapUpDetails details) {
+    _flutterController.reverse();
+  }
+
   @override
   Widget build(BuildContext context) {
+    _scale = 1 - _flutterController.value;
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(
@@ -129,11 +149,18 @@ class _State extends State<MainPage> {
                   alignment: AlignmentDirectional.center,
                   fit: StackFit.loose,
                   children: <Widget>[
-                    FlareActor("assets/Moon.flr",
-                        controller: _flareController,
-                        fit: BoxFit.contain,
-                        animation: 'idle',
-                        artboard: "Artboard"),
+                    GestureDetector(
+                      onTapDown: _onTapDown,
+                      onTapUp: _onTapUp,
+                      child: Transform.scale(
+                        scale: _scale,
+                        child: FlareActor("assets/Moon.flr",
+                            controller: _flareController,
+                            fit: BoxFit.contain,
+                            animation: 'idle',
+                            artboard: "Artboard"),
+                      ),
+                    ),
                     showAst ? Astronaut() : Container(),
                     Positioned(
                       top: -25,
