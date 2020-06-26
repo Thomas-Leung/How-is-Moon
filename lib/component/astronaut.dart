@@ -9,21 +9,32 @@ class Astronaut extends StatefulWidget {
 }
 
 class _AstronautState extends State<Astronaut> {
-  final List<String> animationList = ['idle', 'flash', 'phone'];
+  final List<String> animationList = [
+    'idle',
+    'flash',
+    'phone',
+    'float',
+    'walk'
+  ];
   String astronautAnime = "idle";
+  var randomNum = 0;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: () {
-          var rad = new Random();
-          print(rad.nextInt(3));
+          setState(() {
+            var rad = new Random();
+            randomNum = rad.nextInt(5);
+            print(randomNum);
+          });
         },
         child: FlareActor(
           'assets/Astronaut.flr',
           fit: BoxFit.fitWidth,
-          animation: 'idle',
+          animation: animationList[randomNum],
         ),
       ),
     );

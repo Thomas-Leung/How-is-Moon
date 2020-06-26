@@ -166,6 +166,7 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
                       top: -25,
                       right: 20,
                       child: GestureDetector(
+                        behavior: HitTestBehavior.translucent,
                         onTap: () {
                           setState(() {
                             tapSat = !tapSat;
