@@ -1,22 +1,15 @@
-import 'dart:math';
-
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 
 class Astronaut extends StatefulWidget {
+  final String astAnime;
+  Astronaut(this.astAnime);
   @override
   _AstronautState createState() => _AstronautState();
 }
 
 class _AstronautState extends State<Astronaut> {
-  final List<String> animationList = [
-    'idle',
-    'flash',
-    'phone',
-    'float',
-    'walk'
-  ];
-  String astronautAnime = "idle";
+  bool tap = false;
   var randomNum = 0;
 
   @override
@@ -26,15 +19,13 @@ class _AstronautState extends State<Astronaut> {
         behavior: HitTestBehavior.translucent,
         onTap: () {
           setState(() {
-            var rad = new Random();
-            randomNum = rad.nextInt(5);
-            print(randomNum);
+            tap = !tap;
           });
         },
         child: FlareActor(
           'assets/Astronaut.flr',
           fit: BoxFit.fitWidth,
-          animation: animationList[randomNum],
+          animation: tap ? widget.astAnime : "idle",
         ),
       ),
     );

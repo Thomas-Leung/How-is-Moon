@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingDialog extends StatefulWidget {
-  final Function(String, bool) callback;
+  final Function(String, dynamic) callback;
   SettingDialog(this.callback);
 
   @override
@@ -12,6 +12,7 @@ class SettingDialog extends StatefulWidget {
 class _SettingDialogState extends State<SettingDialog> {
   bool showSat = false;
   bool showAst = false;
+  String astAnime = 'flash';
 
   @override
   void initState() {
@@ -24,12 +25,16 @@ class _SettingDialogState extends State<SettingDialog> {
     setState(() {
       showSat = prefs.getBool('showSat') ?? false;
       showAst = prefs.getBool('showAst') ?? false;
+      astAnime = prefs.getString('astAnime') ?? 'flash';
     });
   }
 
   setSharedPref(key, value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool(key, value);
+    if (key == "astAnime")
+      prefs.setString(key, value);
+    else
+      prefs.setBool(key, value);
   }
 
   @override
@@ -89,6 +94,30 @@ class _SettingDialogState extends State<SettingDialog> {
                           widget.callback('showAst', showAst);
                         },
                         secondary: const Icon(Icons.accessibility_new),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.touch_app),
+                        title: Text("Astronaut when tap"),
+                        enabled: showAst,
+                        trailing: DropdownButton<String>(
+                          value: astAnime,
+                          onChanged: showAst
+                              ? (String value) {
+                                  setSharedPref('astAnime', value);
+                                  setState(() {
+                                    astAnime = value;
+                                  });
+                                  widget.callback('astAnime', astAnime);
+                                }
+                              : null,
+                          items: <String>['flash', 'float', 'phone', 'walk']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
                       )
                     ],
                   ),

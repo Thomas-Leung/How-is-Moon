@@ -44,6 +44,7 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
   DateTime newDate = DateTime.now();
   double diff;
   double _scale;
+  String astAnime;
 
   @override
   void initState() {
@@ -98,6 +99,7 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
     setState(() {
       showSat = prefs.getBool('showSat') ?? false;
       showAst = prefs.getBool('showAst') ?? false;
+      astAnime = prefs.getString('astAnime') ?? "flash";
     });
   }
 
@@ -107,8 +109,10 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
     setState(() {
       if (setting == 'showSat')
         showSat = newState;
-      else
+      else if (setting == 'showAst')
         showAst = newState;
+      else
+        astAnime = newState;
     });
   }
 
@@ -161,7 +165,7 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
                             artboard: "Artboard"),
                       ),
                     ),
-                    showAst ? Astronaut() : Container(),
+                    showAst ? Astronaut(astAnime) : Container(),
                     Positioned(
                       top: -25,
                       right: 20,
