@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:how_is_moon/moon_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingDialog extends StatefulWidget {
@@ -118,6 +119,42 @@ class _SettingDialogState extends State<SettingDialog> {
                             );
                           }).toList(),
                         ),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.info_outline),
+                        title: Text("More Info"),
+                        onTap: () {
+                          showAboutDialog(
+                              context: context,
+                              applicationIcon: Icon(MoonIcons.moon),
+                              applicationName: "How's Moon",
+                              applicationVersion: '1.0.0',
+                              children: <Widget>[
+                                Text(
+                                  "A minimalistic moon phase calculator combined with a digital clock.",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.white70),
+                                ),
+                                Text(
+                                  "\u207A Moon phase is an estimation, there could be +/- a day difference.",
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.white70),
+                                ),
+                                Container(
+                                  height: 20,
+                                ),
+                                Text(
+                                  "Made with 🍜 by Thomas.",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.white70),
+                                ),
+                                Text(
+                                  "\u00a9 2020 Thomas",
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.white70),
+                                ),
+                              ]);
+                        },
                       )
                     ],
                   ),
