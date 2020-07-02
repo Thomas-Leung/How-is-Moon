@@ -23,45 +23,46 @@ class MoonTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
     return Container(
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(16, 100, 16, 30),
-        child: Stack(
-          fit: StackFit.loose,
-          alignment: AlignmentDirectional.center,
-          children: <Widget>[
-            Positioned(
-              top: 0,
-              left: 90,
-              child: Text(
-                DateFormat('yyyy-MM-dd').format(newDate) ==
-                        DateFormat('yyyy-MM-dd').format(DateTime.now())
-                    ? ""
-                    : newDate.year.toString(),
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-              ),
+      width: 250,
+      child: Stack(
+        fit: StackFit.loose,
+        alignment: AlignmentDirectional.center,
+        children: <Widget>[
+          Positioned(
+            top: width > height ? 18 : 70,
+            left: 30,
+            child: Text(
+              DateFormat('yyyy-MM-dd').format(newDate) ==
+                      DateFormat('yyyy-MM-dd').format(DateTime.now())
+                  ? ""
+                  : newDate.year.toString(),
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
             ),
-            Positioned(
-              top: 10,
-              left: 90,
-              child: Text(
-                DateFormat('yyyy-MM-dd').format(newDate) ==
-                        DateFormat('yyyy-MM-dd').format(DateTime.now())
-                    ? "Today's"
-                    : "${months[newDate.month]} ${newDate.day.toString()}",
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 48),
-              ),
+          ),
+          Positioned(
+            top: width > height ? 28 : 80,
+            left: 30,
+            child: Text(
+              DateFormat('yyyy-MM-dd').format(newDate) ==
+                      DateFormat('yyyy-MM-dd').format(DateTime.now())
+                  ? "Today's"
+                  : "${months[newDate.month]} ${newDate.day.toString()}",
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 48),
             ),
-            Positioned(
-              top: 56,
-              right: 100,
-              child: Text(
-                "Moon",
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 40),
-              ),
+          ),
+          Positioned(
+            top: width > height ? 73 : 125,
+            left: 120,
+            child: Text(
+              "Moon",
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 40),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

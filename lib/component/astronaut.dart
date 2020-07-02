@@ -44,6 +44,9 @@ class _AstronautState extends State<Astronaut> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
     return IgnorePointer(
       ignoring: _animating,
       child: Container(
@@ -57,7 +60,7 @@ class _AstronautState extends State<Astronaut> {
           },
           child: FlareActor(
             'assets/Astronaut.flr',
-            fit: BoxFit.fitWidth,
+            fit: width > height? BoxFit.contain : BoxFit.fitWidth,
             animation: _animating ? widget.astAnime : "idle",
           ),
         ),

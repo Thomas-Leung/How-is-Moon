@@ -129,7 +129,7 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
     _scale = 1 - _flutterController.value;
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: Container(
+      body: SafeArea(
         child: Column(
           children: <Widget>[
             Flexible(

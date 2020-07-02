@@ -99,6 +99,10 @@ class _SettingDialogState extends State<SettingDialog> {
                       ListTile(
                         leading: Icon(Icons.touch_app),
                         title: Text("Astronaut when tap"),
+                        subtitle: Text(
+                          "*Work best when device is in portrait mode.",
+                          style: TextStyle(fontSize: 10),
+                        ),
                         enabled: showAst,
                         trailing: DropdownButton<String>(
                           value: astAnime,
