@@ -37,22 +37,19 @@ class _ClockState extends State<Clock> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(
-        child: new Padding(
-          padding: EdgeInsets.fromLTRB(16, 100, 16, 30),
-          child: Column(
-            children: <Widget>[
-              new Text(
-                currTime,
-                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 50),
-              ),
-              new Text(
-                currDate,
-                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 20),
-              ),
-            ],
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          new Text(
+            currTime,
+            style: TextStyle(fontWeight: FontWeight.w200, fontSize: 50),
           ),
-        ),
+          new Text(
+            currDate,
+            style: TextStyle(fontWeight: FontWeight.w200, fontSize: 20),
+          ),
+        ],
       ),
     );
   }
