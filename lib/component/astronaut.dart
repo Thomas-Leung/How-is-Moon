@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Astronaut extends StatefulWidget {
   final String astAnime;
@@ -53,6 +54,7 @@ class _AstronautState extends State<Astronaut> {
         child: GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
+            HapticFeedback.mediumImpact();
             setState(() {
               _animating = true;
               startTimer();
@@ -60,7 +62,7 @@ class _AstronautState extends State<Astronaut> {
           },
           child: FlareActor(
             'assets/Astronaut.flr',
-            fit: width > height? BoxFit.contain : BoxFit.fitWidth,
+            fit: width > height ? BoxFit.contain : BoxFit.fitWidth,
             animation: _animating ? widget.astAnime : "idle",
           ),
         ),

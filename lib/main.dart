@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:how_is_moon/component/astronaut.dart';
 import 'package:how_is_moon/component/clock.dart';
 import 'package:how_is_moon/component/moonTitle.dart';
@@ -154,6 +155,9 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
                   fit: StackFit.loose,
                   children: <Widget>[
                     GestureDetector(
+                      onTap: () {
+                        HapticFeedback.selectionClick();
+                      },
                       onTapDown: _onTapDown,
                       onTapUp: _onTapUp,
                       child: Transform.scale(
@@ -172,6 +176,7 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
                       child: GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
+                          HapticFeedback.heavyImpact();
                           setState(() {
                             tapSat = !tapSat;
                           });
