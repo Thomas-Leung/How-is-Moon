@@ -129,7 +129,7 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     _scale = 1 - _flutterController.value;
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -195,7 +195,7 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
                       ),
                     ),
                   ],
-                  overflow: Overflow.visible,
+                  // overflow: Overflow.visible,
                 ),
               ),
             ),
