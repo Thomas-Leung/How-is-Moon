@@ -30,11 +30,11 @@ class MainPage extends StatefulWidget {
 }
 
 class _State extends State<MainPage> with SingleTickerProviderStateMixin {
-  DateTime _date = new DateTime.now();
+  DateTime _date = DateTime.now();
   String brNav = "Today's Moon";
 
-  AnimationControls _flareController;
-  AnimationController _flutterController;
+  late AnimationControls _flareController;
+  late AnimationController _flutterController;
 
   int currentMoonPhase = 0;
   int selectedMoon = 29;
@@ -43,9 +43,9 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
   bool showAst = false;
   bool showClock = true;
   DateTime newDate = DateTime.now();
-  double diff;
-  double _scale;
-  String astAnime;
+  double diff = 0.0;
+  double _scale = 1.0;
+  String astAnime = "flash";
 
   @override
   void initState() {
@@ -72,24 +72,25 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
     _flareController.updateMoonPhase(diff);
   }
 
-  Future<Null> _selectDate(BuildContext context) async {
-    newDate = await showDatePicker(
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? selectedDate = await showDatePicker(
         context: context,
         initialDate: _date,
-        firstDate: new DateTime(1970, 1, 7),
-        lastDate: new DateTime(2200));
+        firstDate: DateTime(1970, 1, 7),
+        lastDate: DateTime(2200));
 
-    if (newDate != null && newDate != _date) {
-      int moonDay =
-          Moon().calculateMoonPhase(newDate.year, newDate.month, newDate.day);
+    if (selectedDate != null && selectedDate != _date) {
+      int moonDay = Moon().calculateMoonPhase(
+          selectedDate.year, selectedDate.month, selectedDate.day);
       setState(() {
-        _date = newDate;
+        _date = selectedDate;
+        newDate = selectedDate;
         // set pick date button text
-        if (DateFormat('yyyy-MM-dd').format(newDate) ==
+        if (DateFormat('yyyy-MM-dd').format(selectedDate) ==
             DateFormat('yyyy-MM-dd').format(DateTime.now()))
           brNav = "Today's Moon";
         else
-          brNav = new DateFormat('yyyy-MM-dd').format(newDate).toString();
+          brNav = DateFormat('yyyy-MM-dd').format(selectedDate).toString();
         _incrementMoon(moonDay);
       });
     }
@@ -162,11 +163,13 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
                       onTapUp: _onTapUp,
                       child: Transform.scale(
                         scale: _scale,
-                        child: FlareActor("assets/Moon.flr",
-                            controller: _flareController,
-                            fit: BoxFit.contain,
-                            animation: 'idle',
-                            artboard: "Artboard"),
+                        child: FlareActor(
+                          "assets/Moon.flr",
+                          controller: _flareController,
+                          fit: BoxFit.contain,
+                          animation: 'idle',
+                          artboard: "Artboard",
+                        ),
                       ),
                     ),
                     showAst ? Astronaut(astAnime) : Container(),
@@ -195,7 +198,6 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
                       ),
                     ),
                   ],
-                  // overflow: Overflow.visible,
                 ),
               ),
             ),
@@ -212,7 +214,7 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
               MaterialPageRoute(builder: (context) => EarthPage(diff)));
         },
         backgroundColor: Color.fromRGBO(5, 40, 62, 1.0),
-        child: new Image.asset('assets/earth.png'),
+        child: Image.asset('assets/earth.png'),
       ),
       backgroundColor: Color.fromRGBO(5, 40, 62, 1.0),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -224,8 +226,8 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            FlatButton(
-              child: new Text("How's Moon in: "),
+            TextButton(
+              child: Text("How's Moon in: "),
               onPressed: () {
                 showDialog(
                   context: context,
@@ -234,8 +236,8 @@ class _State extends State<MainPage> with SingleTickerProviderStateMixin {
                 );
               },
             ),
-            FlatButton(
-              child: new Text(brNav),
+            TextButton(
+              child: Text(brNav),
               onPressed: () {
                 _selectDate(context);
               },

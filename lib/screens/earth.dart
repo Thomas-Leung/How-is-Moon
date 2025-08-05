@@ -19,7 +19,7 @@ class EarthPage extends StatelessWidget {
 
   // diff is calculated from the main class basically is
   // currentMoon divided by total moon phrase (approx. 29 days)
-  EarthPage(diff) {
+  EarthPage(double diff) {
     // In our Earth animation, the animation name is the same as
     // the Moon animation, therefore, I used the same controller.
     _flareController.updateMoonPhase(diff);
@@ -50,7 +50,7 @@ class EarthPage extends StatelessWidget {
                   onTap: () {
                     tapCount++;
                     if (tapCount >= 3) {
-                      Scaffold.of(context).showSnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
                               'Stop tapping. Earthquake detected from Earth!'),
@@ -62,17 +62,19 @@ class EarthPage extends StatelessWidget {
                       );
                     }
                   },
-                  child: FlareActor("assets/Earth.flr",
-                      controller: _flareController,
-                      fit: BoxFit.contain,
-                      animation: 'idleClouds',
-                      artboard: "Artboard"),
+                  child: FlareActor(
+                    "assets/Earth.flr",
+                    controller: _flareController,
+                    fit: BoxFit.contain,
+                    animation: 'idleClouds',
+                    artboard: "Artboard",
+                  ),
                 ),
               ),
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: FlatButton(
+              child: TextButton(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -83,13 +85,11 @@ class EarthPage extends StatelessWidget {
                   ],
                 ),
                 onPressed: () => Navigator.pop(context),
-                color: Color(0xFF4A5F72),
-                shape: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      style: BorderStyle.solid,
-                      width: 1.0,
-                      color: Colors.transparent),
-                  borderRadius: BorderRadius.circular(20.0),
+                style: TextButton.styleFrom(
+                  backgroundColor: Color(0xFF4A5F72),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
                 ),
               ),
             ),
@@ -125,7 +125,7 @@ class EarthPage extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         children: <Widget>[
-          // _moonDataList has fixed data, we are mapping data to table row 
+          // _moonDataList has fixed data, we are mapping data to table row
           // such that we can customize padding between rows
           Table(
             children: _moonDataList
@@ -159,5 +159,5 @@ class KeyValueModel {
   String key;
   String value;
 
-  KeyValueModel({this.key, this.value});
+  KeyValueModel({required this.key, required this.value});
 }

@@ -3,11 +3,10 @@ import 'package:flare_flutter/flare.dart';
 import 'package:flare_flutter/flare_controller.dart';
 
 class AnimationControls extends FlareController {
-  ActorAnimation _moonAnimation;
+  ActorAnimation? _moonAnimation;
 
   double _moonPhase = 0.00;
   double _currentPhase = 0;
-
   double _smoothTime = 5;
 
   @override
@@ -24,11 +23,11 @@ class AnimationControls extends FlareController {
 
   @override
   bool advance(FlutterActorArtboard artboard, double elapsed) {
-    if (artboard.name.compareTo("Artboard") == 0) {
+    if (artboard.name.compareTo("Artboard") == 0 && _moonAnimation != null) {
       _currentPhase +=
           (_moonPhase - _currentPhase) * min(1, elapsed * _smoothTime);
-      _moonAnimation.apply(
-          _currentPhase * _moonAnimation.duration, artboard, 1);
+      _moonAnimation!
+          .apply(_currentPhase * _moonAnimation!.duration, artboard, 1);
     }
     return true;
   }

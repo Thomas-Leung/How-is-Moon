@@ -11,13 +11,12 @@ class Clock extends StatefulWidget {
 class _ClockState extends State<Clock> {
   String currTime = "How's Moon?";
   String currDate = "";
-  var timer;
+  Timer? timer;
 
   @override
   void initState() {
     super.initState();
-    timer =
-        new Timer.periodic(const Duration(seconds: 1), (Timer t) => _clock());
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) => _clock());
     // calculateMoonPhase(DateTime.now().);
     currDate = DateFormat('EEE d MMM').format(DateTime.now());
   }
@@ -25,7 +24,7 @@ class _ClockState extends State<Clock> {
   @override
   void dispose() {
     super.dispose();
-    timer.cancel();
+    timer?.cancel();
   }
 
   void _clock() {
@@ -41,11 +40,11 @@ class _ClockState extends State<Clock> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          new Text(
+          Text(
             currTime,
             style: TextStyle(fontWeight: FontWeight.w200, fontSize: 50),
           ),
-          new Text(
+          Text(
             currDate,
             style: TextStyle(fontWeight: FontWeight.w200, fontSize: 20),
           ),

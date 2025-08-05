@@ -107,12 +107,14 @@ class _SettingDialogState extends State<SettingDialog> {
                         trailing: DropdownButton<String>(
                           value: astAnime,
                           onChanged: showAst
-                              ? (String value) {
-                                  setSharedPref('astAnime', value);
-                                  setState(() {
-                                    astAnime = value;
-                                  });
-                                  widget.callback('astAnime', astAnime);
+                              ? (String? value) {
+                                  if (value != null) {
+                                    setSharedPref('astAnime', value);
+                                    setState(() {
+                                      astAnime = value;
+                                    });
+                                    widget.callback('astAnime', astAnime);
+                                  }
                                 }
                               : null,
                           items: <String>['flash', 'float', 'phone', 'walk']
@@ -169,9 +171,10 @@ class _SettingDialogState extends State<SettingDialog> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                    child: FlatButton(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        splashFactory: NoSplash.splashFactory,
+                      ),
                       onPressed: () {
                         Navigator.pop(context);
                       },
